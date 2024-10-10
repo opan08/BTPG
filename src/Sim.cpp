@@ -1,14 +1,14 @@
 #include "Sim.hpp"
 #include <algorithm>
 /**
- * @brief Constructor for Sim class
+ * @brief Constructor for Sim class 产生的随机延时的机器人，10%的机器人会有延时
  */
 Sim::Sim(int seed, int numRobots)
 {
     this->seed = seed;
     srand(seed);
     // Choose delayed robots in this simulation
-    double numDelayedRobots = 0.1 * numRobots;
+    double numDelayedRobots = 0.1 * numRobots;//这里定义了10%的机器人会有延时
     for (double i = 0; i < numDelayedRobots; ++i)
     {
         int random_number = rand() % numRobots;
@@ -48,14 +48,14 @@ int Sim::Simulate(BTPG *btpg_)
     }
 
     // 1c. Initialize finished Agent list
-    std::vector<bool> finishedAgent;
+    std::vector<bool> finishedAgent;//记录每个机器人的完成情况
     for (int i = 0; i < this->btpg->getNumAgents(); ++i)
     {
         finishedAgent.push_back(false);
     }
 
     // 1d. Initialize robot stop numbers
-    std::unordered_map<int, int> robotStopNumbers;
+    std::unordered_map<int, int> robotStopNumbers;//记录停留的机器人的状态
     for (int i = 0; i < this->DelayedRobots.size(); ++i)
     {
         robotStopNumbers[this->DelayedRobots[i]] = 0;
@@ -69,8 +69,8 @@ int Sim::Simulate(BTPG *btpg_)
     while (std::find(finishedAgent.begin(), finishedAgent.end(), false) != finishedAgent.end())
     {
         this->BTPGTotalTimeStep++;
-        // 2a.Decide which agent can move at this timestep
-        std::vector<int> movableAgents;
+        // 2a.Decide which agent can move at this timestep 决定当前时刻哪些机器人可以移动
+        std::vector<int> movableAgents;//记录了可以移动的机器人的序号
         DecideMovableAgents(movableAgents, robotStopNumbers);
         // print out all the movable agents
         SimulateTimeStep(movableAgents, visited, finishedAgent);
@@ -1105,23 +1105,25 @@ void Sim::DecideMovableAgents(std::vector<int> &movableAgents, std::unordered_ma
 {
     for (int i = 0; i < this->btpg->getNumAgents(); ++i)
     {
+        // 如果当前机器人编号在延迟机器人列表中
         if (std::find(this->DelayedRobots.begin(), this->DelayedRobots.end(), i) != this->DelayedRobots.end())
         {
             double random = (double)rand() / RAND_MAX;
 
-            if (robotStopNumbers[i] != 0)
+            if (robotStopNumbers[i] != 0)//如果原来已经延时，则直接减少延时计数
             {
                 robotStopNumbers[i]--;
             }
             else
             {
+                // 如果原来没有在延时，则有一定概率不延时（随机数（范围0到1）大于0.3的话，就不延时）
                 if (random > 0.3)
                 {
                     movableAgents.push_back(i);
                 }
                 else
                 {
-                    robotStopNumbers[i] = 5;
+                    robotStopNumbers[i] = 5;//延时5个时间步
                 }
             }
         }

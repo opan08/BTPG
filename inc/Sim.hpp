@@ -19,7 +19,7 @@ private:
 
     int totalDelay = 0;
 
-    std::vector<int> DelayedRobots;
+    std::vector<int> DelayedRobots; //记录延时的机器人编号
     std::vector<std::vector<Coord>> BTPGGeneratedPath;
     std::vector<std::vector<Coord>> TPGGeneratedPath;
     std::vector<std::vector<Coord>> TPGGeneratedPathNoDelay;

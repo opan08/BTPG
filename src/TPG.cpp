@@ -12,7 +12,7 @@ TPG::TPG(std::string fileName)
 #ifdef DEBUG
     std::cout << "Start reading the file" << std::endl;
 #endif
-    while (std::getline(file, line))
+    while (std::getline(file, line)) //遍历每一行，记录每个agent的路径信息
     {
         size_t pos = line.find(':');
         line.erase(0, pos + 2);
@@ -25,6 +25,7 @@ TPG::TPG(std::string fileName)
         int timeStep = 0;
         agent->robotId = getNumAgents();
 
+        // 遍历路径，添加type1边
         while ((pos = line.find(delimiter)) != std::string::npos)
         {
             token = line.substr(0, pos);
@@ -52,7 +53,7 @@ TPG::TPG(std::string fileName)
 
             line.erase(0, pos + delimiter.length());
         }
-        addRobot(agent);
+        addRobot(agent);//agents中添加agent
     }
 #ifdef DEBUG
     std::cout << "Finish reading the file" << std::endl;
@@ -62,21 +63,23 @@ TPG::TPG(std::string fileName)
     {
         int robotId = agent->robotId;
         Node *node = agent->Type1Next;
-        while (node != NULL)
+        while (node != NULL) //遍历每个节点
         {
             int currentTimeStep = node->timeStep;
             for (auto &otherAgent : this->agents)
             {
-                if (otherAgent->robotId != robotId)
+                if (otherAgent->robotId != robotId) //如果不是同一个agent，则进入判断
                 {
                     Node *otherNode = otherAgent->Type1Next;
-                    while (otherNode != NULL)
+                    while (otherNode != NULL)//
                     {
+                        // 判断两个节点(v_i^m,v_j^n)是否同一个位置，而且时间比当前的节点时间晚
                         if (otherNode->coord == node->coord && otherNode->timeStep > currentTimeStep)
                         {
+                            // 
                             type2Edge *newType2Edge = new type2Edge();
-                            newType2Edge->nodeFrom = node->Type1Next;
-                            newType2Edge->nodeTo = otherNode;
+                            newType2Edge->nodeFrom = node->Type1Next;//这个是时间早的节点, v_(i+1)^m
+                            newType2Edge->nodeTo = otherNode;//这个是时间晚的节点 v_j^n
                             newType2Edge->edgeId = getNumTypeTwoEdges();
                             addTypeTwoEdge(newType2Edge);
                             node->Type1Next->Type2Next.push_back(newType2Edge);

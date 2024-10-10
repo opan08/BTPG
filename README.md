@@ -24,3 +24,6 @@ The above command line will run BTPG-optimized on a MAPF plan with 150 agents on
 - -a: 0 for BTPG-naïve and 1 for BTPG-optimized
 
 Also if you want to try other MAPF plans, there are other maps and scenarios to try in the `experiment/path` folder.
+
+
+`experiment/path` 文件夹内包含很多mapf路径，可以尝试运行。

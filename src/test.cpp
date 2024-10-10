@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
             if (i + 1 < argc)
             {
                 filename = argv[i + 1];
-                std::cout << "File: " << filename << std::endl;
+                std::cout << "Path file: " << filename << std::endl;
                 ++i; // Skip the next argument as it's the value
             }
             else
@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
         }
         else if (arg == "-a" || arg == "--algorithm")
         {
+            // 0 for BTPG-naïve and 1 for BTPG-optimized
             if (i + 1 < argc)
             {
                 algorithmIdx = std::stoi(argv[i + 1]);

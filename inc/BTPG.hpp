@@ -9,8 +9,8 @@ class BTPG : public TPG
 {
 private:
     int numBiPairs;
-    int mode;
-    std::vector<BiPair *> BiPairs;
+    int mode;//算法模式，0表示BTPG-n，1表示BTPG-o
+    std::vector<BiPair *> BiPairs;//保存所有双向对
     std::vector<Type2EdgeGroup *> Type2EdgeGroups;
     
 
@@ -24,6 +24,7 @@ private:
 public:
     // using TPG::TPG;
     bool finish = false;
+    // fileName: mapf路线的输入文件名
     BTPG(std::string fileName, int mode, int timeInterval);
 
     int getNumBiPairs();

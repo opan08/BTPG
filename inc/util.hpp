@@ -69,13 +69,13 @@ struct type2Edge;
  */
 struct Node
 {
-    Coord coord;                        ///< The coordinates of the Node in the map
-    Node *Type1Next;                    ///< Pointer to the next Node of type 1
-    std::vector<type2Edge *> Type2Next; ///< Vector of pointers to the next Nodes of type 2
-    Node *Type1Prev;                    ///< Pointer to the previous Node of type 1
-    std::vector<type2Edge *> Type2Prev; ///< Vector of pointers to the previous Nodes of type 2
-    int timeStep;                       ///< The time step at which this Node exists
-    int robotId;                        ///< The ID of the robot at this Node
+    Coord coord;                        ///< The coordinates of the Node in the map 这个节点的坐标
+    Node *Type1Next;                    ///< Pointer to the next Node of type 1 指向从这个节点出发的type1节点
+    std::vector<type2Edge *> Type2Next; ///< Vector of pointers to the next Nodes of type 2 指向从当前节点出发的type2边的集合
+    Node *Type1Prev;                    ///< Pointer to the previous Node of type 1 指向能到达当前节点的type1节点
+    std::vector<type2Edge *> Type2Prev; ///< Vector of pointers to the previous Nodes of type 2 指向到达当前节点的type2边的集合
+    int timeStep;                       ///< The time step at which this Node exists 这个节点所在的timestep，对应的是该路径点在路径上的序号
+    int robotId;                        ///< The ID of the robot at this Node 机器人的id
     /**
      * @brief Default constructor for Node.
      */
@@ -114,8 +114,8 @@ struct Node
  */
 struct Agent
 {
-    Node *Type1Next;  ///< Pointer to the first Node of type 1
-    int pathLength;   ///< The length of the path of the agent
+    Node *Type1Next;  ///< Pointer to the first Node of type 1 指向下一个type1节点
+    int pathLength;   ///< The length of the path of the agent， agent的路径长度
     int robotId;      ///< The ID of the robot
     int finishedTime; ///< The time step at which the agent finished
     // Simulation
@@ -145,7 +145,7 @@ struct Agent
 struct type2Edge
 {
     int edgeId; ///< The ID of the edge
-    int biPairId;
+    int biPairId; ///< 保存这条边对应的双向边的id
     int groupId; ///< The ID of the group that this edge belongs to
     int biGroupId;
 
@@ -181,8 +181,8 @@ struct Type2EdgeGroup
     std::vector<type2Edge *> type2Edges;
     int groupId;
     bool canBeReversed = false;
-    int fromId;
-    int toId;
+    int fromId; //表示从哪个机器人出发
+    int toId; //表示到达哪个机器人
     type2Edge *earliestOutEdge = nullptr;
     type2Edge *earliestInEdge = nullptr;
     bool isBidirectional = false;
