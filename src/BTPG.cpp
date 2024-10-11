@@ -205,8 +205,10 @@ void BTPG::CheckSingleton(type2Edge *candidateEdge)
 
         // Add another type-2 edge 新建一条反向的type2边
         type2Edge *newType2Edge = new type2Edge();
-        newType2Edge->nodeFrom = candidateEdge->nodeTo;//v^(n)_(j)，TODO:为什么这里不是v^(n)_(j+1)??与下面的不一样
-        newType2Edge->nodeTo = candidateEdge->nodeFrom;//v^m_i+1, TODO:为什么这里不是v^m_i??与下面的不一样
+        // newType2Edge->nodeFrom = candidateEdge->nodeTo;//v^(n)_(j)，TODO:为什么这里不是v^(n)_(j+1)??与下面的不一样
+        // newType2Edge->nodeTo = candidateEdge->nodeFrom;//v^m_i+1, TODO:为什么这里不是v^m_i??与下面的不一样
+        newType2Edge->nodeFrom = candidateEdge->nodeTo->Type1Next;//v^(n)_(j+1)
+        newType2Edge->nodeTo = candidateEdge->nodeFrom->Type1Prev;//v^m_i
         newType2Edge->edgeId = getNumTypeTwoEdges();
         newType2Edge->isBidirectional = true;
         addTypeTwoEdge(newType2Edge);
